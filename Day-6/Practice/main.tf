@@ -2,12 +2,8 @@ provider "aws" {
   region = "us-east-1"
 }
 
-variable "ami" {
-  description = "value"
-}
-
 variable "instance_type" {
-  description = "value"
+  description = "instance type for ec2"
   type        = map(string)
 
   default = {
@@ -17,8 +13,9 @@ variable "instance_type" {
   }
 }
 
-module "ec2_instance" {
-  source        = "./modules/ec2_instance"
-  ami           = var.ami
+module "web" {
+  source        = "./modules/"
   instance_type = lookup(var.instance_type, terraform.workspace, "t2.micro")
+  instance_name = "web-${terraform.workspace}"
+  
 }
